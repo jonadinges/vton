@@ -24,9 +24,15 @@ export async function POST(request: Request) {
     let productArrayBuffer: ArrayBuffer;
     let productMime = "image/jpeg";
     if (productUrl.startsWith("/")) {
-      const filePath = new URL("../../../../public" + productUrl, import.meta.url).pathname;
-      const data = await (await import("node:fs/promises")).readFile(filePath);
-      productArrayBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
+      // Convert local path to full URL using request headers
+      const host = request.headers.get('host');
+      const protocol = request.headers.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https');
+      const baseUrl = `${protocol}://${host}`;
+      const fullUrl = `${baseUrl}${productUrl}`;
+      
+      const productRes = await fetch(fullUrl);
+      if (!productRes.ok) throw new Error(`Failed to fetch product image: ${productRes.status}`);
+      productArrayBuffer = await productRes.arrayBuffer();
       const ext = productUrl.toLowerCase();
       if (ext.endsWith(".png")) productMime = "image/png";
       if (ext.endsWith(".webp")) productMime = "image/webp";
