@@ -2,11 +2,44 @@ import { NextResponse } from "next/server";
 import { env } from "~/env";
 import { GoogleGenAI } from "@google/genai";
 import sharp from "sharp";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
+    // Rate limit by IP (or forwarded-for)
+    if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
+      const redis = Redis.fromEnv();
+      const ratelimit = new Ratelimit({
+        redis,
+        limiter: Ratelimit.fixedWindow(env.RATE_LIMIT_HOURLY, "3600 s"),
+        prefix: "vton:rate",
+      });
+      const ip =
+        (typeof request.headers.get === "function" &&
+          (request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+            request.headers.get("x-real-ip") ||
+            request.headers.get("cf-connecting-ip") ||
+            request.headers.get("fly-client-ip") ||
+            request.headers.get("fastly-client-ip") ||
+            request.headers.get("x-client-ip") ||
+            request.headers.get("x-cluster-client-ip") ||
+            request.headers.get("x-forwarded") ||
+            request.headers.get("forwarded-for") ||
+            request.headers.get("forwarded") ||
+            request.headers.get("remote-addr"))) ||
+        "unknown";
+      const { success, remaining, limit, reset } = await ratelimit.limit(`ip:${ip}`);
+      if (!success) {
+        const retryAfter = Math.max(0, Math.ceil(reset - Date.now()) / 1000);
+        return NextResponse.json(
+          { error: "Rate limit exceeded. Please try again later." },
+          { status: 429, headers: { "retry-after": String(Math.ceil(retryAfter)) } }
+        );
+      }
+    }
     const contentType = request.headers.get("content-type") ?? "";
     if (!contentType.includes("multipart/form-data")) {
       return NextResponse.json({ error: "Expected multipart/form-data" }, { status: 400 });

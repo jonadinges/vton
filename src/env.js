@@ -10,6 +10,9 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     GEMINI_API_KEY: z.string(),
     GEMINI_IMAGE_MODEL: z.string().default("gemini-2.5-flash-image-preview"),
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+    RATE_LIMIT_HOURLY: z.coerce.number().int().positive().default(30),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -32,6 +35,9 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     GEMINI_IMAGE_MODEL: process.env.GEMINI_IMAGE_MODEL,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    RATE_LIMIT_HOURLY: process.env.RATE_LIMIT_HOURLY,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
