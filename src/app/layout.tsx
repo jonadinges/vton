@@ -6,8 +6,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
-  title: "Bogotto — Virtual Try-On Experience",
-  description: "Experience Bogotto motorcycle gear with AI-powered virtual try-on",
+  title: "Motorrad Bekleidung virtuell entdecken",
+  description: "Motorrad Bekleidung virtuell entdecken",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
+    <html lang="de" className={`${inter.variable} ${mono.variable}`}>
       <body className="overflow-x-hidden bg-[#0a0a0a] text-white antialiased">
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

@@ -171,10 +171,10 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.5 }}
             className="text-display font-bold bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent mb-6"
           >
-            Experience
+            Motorrad Bekleidung
             <br />
             <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-              Virtual Reality
+              virtuell entdecken
             </span>
           </motion.div>
 
@@ -184,7 +184,7 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.7 }}
             className="text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            Revolutionary AI-powered virtual try-on technology. See Bogotto motorcycle gear on yourself with photorealistic precision.
+            Virtual Try-On für Bogotto Motorrad Bekleidung – erlebe wie Premium Gear an dir aussieht.
           </motion.p>
 
           <motion.div
@@ -239,7 +239,7 @@ export default function Home() {
           >
             <h2 className="text-headline mb-4">Featured Collection</h2>
             <p className="text-white/60 max-w-2xl mx-auto">
-              Cutting-edge motorcycle gear engineered for performance and style. Each piece represents decades of innovation.
+              Modernste Motorradbekleidung für höchste Performance und Stil. Jedes Stück vereint jahrzehntelange Innovation.
             </p>
           </motion.div>
 
