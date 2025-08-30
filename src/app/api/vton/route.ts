@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     if (productUrl.startsWith("/")) {
       const filePath = new URL("../../../../public" + productUrl, import.meta.url).pathname;
       const data = await (await import("node:fs/promises")).readFile(filePath);
-      productArrayBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+      productArrayBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
       const ext = productUrl.toLowerCase();
       if (ext.endsWith(".png")) productMime = "image/png";
       if (ext.endsWith(".webp")) productMime = "image/webp";

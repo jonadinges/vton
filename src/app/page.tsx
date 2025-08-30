@@ -256,7 +256,7 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: i * 0.1 }}
                   className="group cursor-pointer"
                   onClick={() => {
-                    setProductUrl(product.images[0]);
+                    setProductUrl(product.images[0] || "");
                     setSelectedProduct(i);
                   }}
                 >
@@ -282,7 +282,7 @@ export default function Home() {
                         </div>
                       ) : (
                         <motion.img
-                          src={product.images[0]}
+                          src={product.images[0] || ""}
                           alt={product.title}
                           className="w-full h-72 object-contain bg-white p-4"
                           whileHover={{ scale: 1.05 }}
@@ -308,7 +308,7 @@ export default function Home() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                onSubmit(product.id, product.images[0]);
+                                onSubmit(product.id, product.images[0] || "");
                               }}
                               disabled={!person}
                               className="w-full bg-black/80 rounded-full px-6 py-3 text-sm font-semibold text-center shadow-lg disabled:opacity-50"
@@ -413,7 +413,7 @@ export default function Home() {
                     className="relative"
                   >
                     <img
-                      src={products[selectedProduct]!.images[0]}
+                      src={products[selectedProduct]!.images[0] || ""}
                       alt={products[selectedProduct]!.title}
                       className="max-w-full max-h-[50vh] object-contain rounded-2xl shadow-2xl"
                     />
@@ -551,7 +551,7 @@ export default function Home() {
                     </motion.button>
                     
                     <motion.button
-                      onClick={() => onSubmit(products[selectedProduct]!.id, products[selectedProduct]!.images[0])}
+                      onClick={() => onSubmit(products[selectedProduct]!.id, products[selectedProduct]!.images[0] || "")}
                       disabled={loading !== null || !person}
                       className="w-full bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl py-4 font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/30 magnetic pulse-glow"
                       whileHover={loading === null && person ? { scale: 1.02 } : {}}
